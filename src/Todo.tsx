@@ -1,24 +1,48 @@
 import React, { useState } from "react";
-import ListGroup from "react-bootstrap/ListGroup";
+import { ListGroup, Form, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal";
-import "./App.css";
+import DateTimePicker from "react-datetime-picker";
 import { IoAddCircleOutline } from "react-icons/io5";
+import "./App.css";
 
 const Todo: React.FC = () => {
   const [item, setItem] = useState<string[]>([]);
-  const [show, setShow] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState<boolean>(false);
+  const [checks, setChecks] = useState<boolean[]>([false, false]);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [signal, setSignal] = useState<boolean>(false);
+  const [checkInput, setCheckInput] = useState<boolean>(true);
+
   const handleShow = () => setShow(true);
   const handleClose = () => {
     setShow(false);
   };
-  const handleDone = () => {
-    setShow(false);
-    item.unshift(inputValue);
-  };
-  const [inputValue, setInputValue] = useState<string>("");
 
+  const handleDateChange = (e: any) => {
+    console.log("dfjbfhgdjhyf", e);
+  };
+  const handleCheck = (index: number) => {
+    console.log("check-->", checks);
+    const newChecks: boolean[] = [...checks];
+    newChecks[index] = !newChecks[index];
+    console.log(newChecks, "-----");
+    setChecks(newChecks);
+  };
+
+  const handleDone = () => {
+    if (inputValue === "") {
+      setCheckInput(false);
+    } else {
+      setShow(false);
+      setCheckInput(true);
+      item.unshift(inputValue);
+      setInputValue("");
+    }
+  };
+  const checkTodo = () => {
+    setSignal(!signal);
+  };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
@@ -29,12 +53,19 @@ const Todo: React.FC = () => {
         <IoAddCircleOutline onClick={handleShow} />
       </div>
       <div className="container-box">
-        {item.map((element) => (
-          <ListGroup variant="flush" key={element} className="displayItem">
-            <Form.Check />
-            <ListGroup.Item>{element}</ListGroup.Item>
-          </ListGroup>
-        ))}
+        <ListGroup variant="flush">
+          {item.map((element: string, index: number) => (
+            <ListGroup.Item key={index}>
+              <Form.Check
+                type="checkbox"
+                label={element}
+                onChange={() => handleCheck(index)}
+                onClick={checkTodo}
+              />
+              <span className={signal ? "green-dot" : "red-dot"}></span>
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
       </div>
       <div className="addModal">
         <Modal show={show} onHide={handleClose} className="modalContainer">
@@ -44,6 +75,7 @@ const Todo: React.FC = () => {
             </Form.Label>
             <Form.Control
               as="textarea"
+              className={checkInput ? "black-border" : "red-border"}
               rows={3}
               value={inputValue}
               onChange={handleInputChange}
@@ -51,6 +83,11 @@ const Todo: React.FC = () => {
           </Form.Group>
           <Modal.Footer className="modalFooter">
             <p onClick={handleClose}>Cancel</p>
+            <DateTimePicker
+              className="custom-datetime-picker"
+              onChange={(e) => handleDateChange(e)}
+              value={date}
+            />
             <p onClick={handleDone}>Done</p>
           </Modal.Footer>
         </Modal>

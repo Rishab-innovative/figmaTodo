@@ -4,14 +4,25 @@
 }
 
 .nav {
+  padding: 1rem 0.6rem;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+}
+
+.nav p {
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 .modalFooter {
   display: flex;
   justify-content: space-between;
   color: blue;
+}
+
+.modalFooter p:hover {
+  cursor: pointer;
 }
 
 .addText {
@@ -22,4 +33,53 @@
 .mb-3 {
   padding: 0 1rem;
 
+}
+
+.form-check-input[type=checkbox] {
+  border-radius: 50%;
+}
+
+svg {
+  font-size: 2rem;
+  cursor: pointer;
+  color: blue;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+.green-dot,
+.red-dot {
+  border: none;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+}
+
+.red-dot {
+  background-color: red;
+}
+
+.green-dot {
+  background-color: green;
+}
+
+.list-group-flush > .list-group-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.black-border {
+  border-color: black;
+}
+
+.red-border {
+  border-color: red;
+}
+
+.custom-datetime-picker {
+  background-color: lightblue;
+  border: 1px solid gray;
+  width: 40%;
 }
