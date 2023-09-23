@@ -2,43 +2,82 @@ import React, { useState } from "react";
 import { ListGroup, Form, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { CiAlarmOn } from "react-icons/ci";
+
 import "./App.css";
 
 const Todo: React.FC = () => {
-  const [item, setItem] = useState<string[]>([]);
-  const [date, setDate] = useState(new Date());
+  const [items, setItems] = useState<TodoItem[]>([]);
+  const [value, onChange] = useState<Value>(new Date());
   const [show, setShow] = useState<boolean>(false);
   const [checks, setChecks] = useState<boolean[]>([false, false]);
   const [inputValue, setInputValue] = useState<string>("");
   const [signal, setSignal] = useState<boolean>(false);
   const [checkInput, setCheckInput] = useState<boolean>(true);
 
+  type TodoItem = {
+    text: string;
+    dateTime: Date;
+  };
+  const currentD = new Date();
+  let currentMin = currentD.getMinutes();
+  let currentHour = currentD.getHours();
+  let currentDate = currentD.getDate();
+  let currentMonth = currentD.getMonth();
+  let currentYear = currentD.getFullYear();
+
+  const currentTime =
+    currentYear.toString() +
+    currentMonth.toString() +
+    currentDate.toString() +
+    currentHour.toString() +
+    currentMin.toString();
+
+  const hours = (value as Date).getHours();
+  let hour = hours > 12 ? hours - 12 : hours;
+  const minutes = (value as Date).getMinutes();
+  let min = minutes > 9 ? minutes : `0${minutes}`;
+  const date = (value as Date).getDate();
+  const month = (value as Date).getMonth() + 1;
+  const year = (value as Date).getFullYear();
+
+  const futureDate =
+    year.toString() +
+    month.toString() +
+    date.toString() +
+    hours.toString() +
+    minutes.toString();
+  const gap = (parseInt(futureDate) - parseInt(currentTime)) / 100000;
+  type ValuePiece = Date | null;
+  type Value = ValuePiece | [ValuePiece, ValuePiece];
+
   const handleShow = () => setShow(true);
   const handleClose = () => {
     setShow(false);
   };
-
-  const handleDateChange = (e: any) => {
-    console.log("dfjbfhgdjhyf", e);
-  };
   const handleCheck = (index: number) => {
-    console.log("check-->", checks);
-    const newChecks: boolean[] = [...checks];
-    newChecks[index] = !newChecks[index];
-    console.log(newChecks, "-----");
-    setChecks(newChecks);
+    console.log("index-->", index);
   };
 
   const handleDone = () => {
     if (inputValue === "") {
       setCheckInput(false);
     } else {
+      const newTodoItem: TodoItem = {
+        text: inputValue,
+        dateTime: value as Date,
+      };
       setShow(false);
       setCheckInput(true);
-      item.unshift(inputValue);
+      setItems([...items, newTodoItem]);
       setInputValue("");
     }
+  };
+
+  const setampm = (hours: number) => {
+    return hours > 12 ? "pm" : "am";
   };
   const checkTodo = () => {
     setSignal(!signal);
@@ -52,17 +91,23 @@ const Todo: React.FC = () => {
         <p>Today</p>
         <IoAddCircleOutline onClick={handleShow} />
       </div>
-      <div className="container-box">
+      <div className="x">
         <ListGroup variant="flush">
-          {item.map((element: string, index: number) => (
+          {items.map((todoItem: TodoItem, index: number) => (
             <ListGroup.Item key={index}>
-              <Form.Check
-                type="checkbox"
-                label={element}
-                onChange={() => handleCheck(index)}
-                onClick={checkTodo}
-              />
-              <span className={signal ? "green-dot" : "red-dot"}></span>
+              <div className="container-box">
+                <Form.Check
+                  type="checkbox"
+                  label={todoItem.text}
+                  onChange={() => handleCheck(index)}
+                  onClick={checkTodo}
+                />
+                <span className={signal ? "green-dot" : "red-dot"}></span>
+              </div>
+              <div className="display-time">
+                <CiAlarmOn />
+                {hour}:{min} {setampm(hours)} {date}/{month}/{year}
+              </div>
             </ListGroup.Item>
           ))}
         </ListGroup>
@@ -83,11 +128,7 @@ const Todo: React.FC = () => {
           </Form.Group>
           <Modal.Footer className="modalFooter">
             <p onClick={handleClose}>Cancel</p>
-            <DateTimePicker
-              className="custom-datetime-picker"
-              onChange={(e) => handleDateChange(e)}
-              value={date}
-            />
+            <DateTimePicker onChange={onChange} value={value} />
             <p onClick={handleDone}>Done</p>
           </Modal.Footer>
         </Modal>
