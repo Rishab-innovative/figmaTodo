@@ -60,6 +60,7 @@ p {
 }
 
 .display-time {
+  padding-left: 1.2rem;
   font-size: 0.8rem;
   color: grey;
   display: flex;
@@ -68,19 +69,24 @@ p {
 }
 
 .green-dot,
-.red-dot {
+.red-dot,
+.purple-dot {
   border: none;
   height: 1rem;
   width: 1rem;
   border-radius: 50%;
 }
 
+.purple-dot {
+  background-color: #B678FF;
+}
+
 .red-dot {
-  background-color: red;
+  background-color: rgb(244, 94, 109);
 }
 
 .green-dot {
-  background-color: green;
+  background-color: rgb(97, 222, 164);
 }
 
 .container-box {
@@ -94,6 +100,13 @@ p {
 
 .red-border {
   border-color: red;
+}
+
+.error-msg {
+  color: red;
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: center;
 }
 
 .custom-datetime-picker {

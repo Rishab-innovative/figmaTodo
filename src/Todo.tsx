@@ -5,51 +5,24 @@ import DateTimePicker from "react-datetime-picker";
 import "react-datetime-picker/dist/DateTimePicker.css";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { CiAlarmOn } from "react-icons/ci";
-
 import "./App.css";
 
 const Todo: React.FC = () => {
   const [items, setItems] = useState<TodoItem[]>([]);
+  const [error, setError] = useState<boolean>(false);
   const [value, onChange] = useState<Value>(new Date());
   const [show, setShow] = useState<boolean>(false);
-  const [checks, setChecks] = useState<boolean[]>([false, false]);
   const [inputValue, setInputValue] = useState<string>("");
   const [signal, setSignal] = useState<boolean>(false);
   const [checkInput, setCheckInput] = useState<boolean>(true);
 
   type TodoItem = {
+    id: number;
     text: string;
     dateTime: Date;
+    completed: boolean;
+    color: string;
   };
-  const currentD = new Date();
-  let currentMin = currentD.getMinutes();
-  let currentHour = currentD.getHours();
-  let currentDate = currentD.getDate();
-  let currentMonth = currentD.getMonth();
-  let currentYear = currentD.getFullYear();
-
-  const currentTime =
-    currentYear.toString() +
-    currentMonth.toString() +
-    currentDate.toString() +
-    currentHour.toString() +
-    currentMin.toString();
-
-  const hours = (value as Date).getHours();
-  let hour = hours > 12 ? hours - 12 : hours;
-  const minutes = (value as Date).getMinutes();
-  let min = minutes > 9 ? minutes : `0${minutes}`;
-  const date = (value as Date).getDate();
-  const month = (value as Date).getMonth() + 1;
-  const year = (value as Date).getFullYear();
-
-  const futureDate =
-    year.toString() +
-    month.toString() +
-    date.toString() +
-    hours.toString() +
-    minutes.toString();
-  const gap = (parseInt(futureDate) - parseInt(currentTime)) / 100000;
   type ValuePiece = Date | null;
   type Value = ValuePiece | [ValuePiece, ValuePiece];
 
@@ -57,33 +30,62 @@ const Todo: React.FC = () => {
   const handleClose = () => {
     setShow(false);
   };
-  const handleCheck = (index: number) => {
-    console.log("index-->", index);
+  const handleCheck = (id: number) => {
+    const itemToUpdate = items.find((item) => item.id === id);
+    if (itemToUpdate) {
+      setSignal(!itemToUpdate.completed);
+      const updatedItems = items.map((item) =>
+        item.id === id ? { ...item, completed: !item.completed } : item
+      );
+      setItems(updatedItems);
+    }
+    updateItemColors();
+  };
+  const updateItemColors = () => {
+    const currentDate = new Date();
+    const updatedItems = items.map((item) => {
+      if (item.dateTime < currentDate) {
+        return { ...item, color: "red-dot" };
+      } else {
+        return item;
+      }
+    });
+    setItems(updatedItems);
   };
 
   const handleDone = () => {
     if (inputValue === "") {
       setCheckInput(false);
     } else {
-      const newTodoItem: TodoItem = {
-        text: inputValue,
-        dateTime: value as Date,
-      };
-      setShow(false);
-      setCheckInput(true);
-      setItems([...items, newTodoItem]);
-      setInputValue("");
-    }
-  };
+      const selectedTime = value as Date;
+      const currentTime = new Date();
 
-  const setampm = (hours: number) => {
-    return hours > 12 ? "pm" : "am";
+      if (selectedTime > currentTime) {
+        const newTodoItem: TodoItem = {
+          id: items.length + 1,
+          text: inputValue,
+          dateTime: selectedTime,
+          completed: false,
+          color: "purple-dot",
+        };
+        setShow(false);
+        setCheckInput(true);
+        setItems([...items, newTodoItem]);
+        setInputValue("");
+        setError(false);
+      } else {
+        updateItemColors();
+        setError(true);
+        setShow(true);
+      }
+    }
   };
   const checkTodo = () => {
     setSignal(!signal);
   };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
+    updateItemColors();
   };
   return (
     <div className="container">
@@ -93,20 +95,22 @@ const Todo: React.FC = () => {
       </div>
       <div className="x">
         <ListGroup variant="flush">
-          {items.map((todoItem: TodoItem, index: number) => (
-            <ListGroup.Item key={index}>
+          {items.map((element) => (
+            <ListGroup.Item key={element.id}>
               <div className="container-box">
                 <Form.Check
                   type="checkbox"
-                  label={todoItem.text}
-                  onChange={() => handleCheck(index)}
+                  label={element.text}
+                  onChange={() => handleCheck(element.id)}
                   onClick={checkTodo}
                 />
-                <span className={signal ? "green-dot" : "red-dot"}></span>
+                <span
+                  className={element.completed ? "green-dot" : element.color}
+                ></span>
               </div>
               <div className="display-time">
                 <CiAlarmOn />
-                {hour}:{min} {setampm(hours)} {date}/{month}/{year}
+                {element.dateTime.toLocaleString()}
               </div>
             </ListGroup.Item>
           ))}
@@ -129,8 +133,10 @@ const Todo: React.FC = () => {
           <Modal.Footer className="modalFooter">
             <p onClick={handleClose}>Cancel</p>
             <DateTimePicker onChange={onChange} value={value} />
+
             <p onClick={handleDone}>Done</p>
           </Modal.Footer>
+          {error ? <p className="error-msg">"DO NOT SELECT PAST TIME"</p> : ""}
         </Modal>
       </div>
     </div>
