@@ -31,6 +31,7 @@ const Todo: React.FC = () => {
     setShow(false);
   };
   const handleCheck = (id: number) => {
+    console.log("click fun---");
     const itemToUpdate = items.find((item) => item.id === id);
     if (itemToUpdate) {
       setSignal(!itemToUpdate.completed);
@@ -38,10 +39,11 @@ const Todo: React.FC = () => {
         item.id === id ? { ...item, completed: !item.completed } : item
       );
       setItems(updatedItems);
+      setSignal(!itemToUpdate.completed);
     }
-    updateItemColors();
   };
   const updateItemColors = () => {
+    console.log("insodecolorfun");
     const currentDate = new Date();
     const updatedItems = items.map((item) => {
       if (item.dateTime < currentDate) {

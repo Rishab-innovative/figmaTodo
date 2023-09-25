@@ -17,7 +17,6 @@
 
 .container-box {
   width: 100%;
-  /* border: 1px solid red; */
 }
 
 .modalFooter {
@@ -107,11 +106,6 @@ p {
   font-size: 0.7rem;
   display: flex;
   justify-content: center;
-}
-
-.custom-datetime-picker {
-  background-color: lightblue;
-  border: 1px solid gray;
 }
 
 .x {
