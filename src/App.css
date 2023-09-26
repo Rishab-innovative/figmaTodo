@@ -1,38 +1,116 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.nav {
+  padding: 1rem 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.nav p {
+  font-size: 2rem;
+  font-weight: 700;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.container-box {
+  display: flex;
+  justify-content: space-between;
+  word-break: break-word;
+}
+
+.form-check {
+  width: fit-content;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: space-between;
+  color: blue;
+}
+
+.modalFooter p:hover {
+  cursor: pointer;
+}
+
+.addText {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.mb-3 {
+  padding: 0 1rem;
+
+}
+
+.form-check-input[type=checkbox] {
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+svg {
+  font-size: 2rem;
+  cursor: pointer;
+  color: blue;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+.display-time svg {
+  color: grey;
+  font-size: 1rem;
+}
+
+.display-time {
+  padding-left: 1.2rem;
+  font-size: 0.8rem;
+  color: grey;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.green-dot,
+.red-dot,
+.purple-dot {
+  border: none;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+}
+
+.purple-dot {
+  background-color: #B678FF;
+}
+
+.red-dot {
+  background-color: rgb(244, 94, 109);
+}
+
+.green-dot {
+  background-color: rgb(97, 222, 164);
+}
+
+.black-border {
+  border-color: black;
+}
+
+.red-border {
+  border-color: red;
+}
+
+.error-msg {
+  color: red;
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: center;
+}
+
+.todo-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
