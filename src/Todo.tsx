@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { ListGroup, Form, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DateTimePicker from "react-datetime-picker";
+import "react-date-picker/dist/DatePicker.css";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
 import "react-datetime-picker/dist/DateTimePicker.css";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { CiAlarmOn } from "react-icons/ci";
@@ -15,7 +18,8 @@ const Todo: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [signal, setSignal] = useState<boolean>(false);
   const [checkInput, setCheckInput] = useState<boolean>(true);
-
+  //today's standup
+  //I will read about jenkins, react core concepts and practice about it.
   type TodoItem = {
     id: number;
     text: string;
