@@ -16,7 +16,13 @@
 }
 
 .container-box {
-  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  word-break: break-word;
+}
+
+.form-check {
+  width: fit-content;
 }
 
 .modalFooter {
@@ -41,6 +47,7 @@
 
 .form-check-input[type=checkbox] {
   border-radius: 50%;
+  cursor: pointer;
 }
 
 svg {
@@ -88,11 +95,6 @@ p {
   background-color: rgb(97, 222, 164);
 }
 
-.container-box {
-  display: flex;
-  justify-content: space-between;
-}
-
 .black-border {
   border-color: black;
 }
@@ -108,7 +110,7 @@ p {
   justify-content: center;
 }
 
-.x {
+.todo-wrapper {
   display: flex;
   flex-direction: column;
 }
