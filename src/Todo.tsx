@@ -18,8 +18,6 @@ const Todo: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [signal, setSignal] = useState<boolean>(false);
   const [checkInput, setCheckInput] = useState<boolean>(true);
-  //today's standup
-  //I will read about jenkins, react core concepts and practice about it.
   type TodoItem = {
     id: number;
     text: string;
