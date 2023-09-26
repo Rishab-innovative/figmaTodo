@@ -39,8 +39,8 @@ const Todo: React.FC = () => {
     });
     setItems(updatedItems);
   };
-
   const handleDone = () => {
+    //console.log("inside handledone func");
     if (inputValue.trim() === "") {
       setCheckInput(false);
     } else {
